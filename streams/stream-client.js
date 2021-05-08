@@ -1,7 +1,7 @@
-import { request }          from 'http';
-import { createGzip }       from 'zlib';
-import { createReadStream } from 'fs';
-import { basename }         from 'path';
+const { request }          = require('http');
+const { createGzip }       = require('zlib');
+const { createReadStream } = require('fs');
+const { basename }         = require('path');
 
 const filename   = process.argv[2];
 const serverHost = process.argv[3];

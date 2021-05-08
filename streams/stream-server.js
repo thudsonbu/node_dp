@@ -1,7 +1,7 @@
-import { createServer }      from 'http';
-import { createWriteStream } from 'fs;'
-import { createGunzip }      from 'zlib';
-import { basename, join }    from 'path';
+const { createServer }      = require('http');
+const { createGunzip }      = require('zlib');
+const { createWriteStream } = require('fs');
+const { basename, join }    = require('path');
 
 const server = createServer( ( req, res ) => {
   const filename     = basename( req.headers['x-filename'] );
@@ -11,7 +11,7 @@ const server = createServer( ( req, res ) => {
 
   req
     .pipe( createGunzip() )
-    .pipe( createWriteStream )
+    .pipe( createWriteStream(destFilename) )
     .on( 'finish', () => {
       res.writeHead( 201, { 'Content-Type': 'text/plain' } );
       res.end( 'OK\n' );
