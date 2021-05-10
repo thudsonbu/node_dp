@@ -12,7 +12,8 @@ const server = createServer((req, res) => {
         length: 16 * 1024 - 1,
       });
 
-      // response object implements the writeable interface
+      // response object implements the writeable interface so if the recipient
+      // returns false indicating backpressure it is captured here
       const shouldContinue = res.write(`${randomChunk}\n`);
 
       if (!shouldContinue) {
