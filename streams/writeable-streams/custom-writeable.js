@@ -1,5 +1,5 @@
 const { Writable } = require("stream");
-const { mkdir } = require("fs");
+const fs = require("fs");
 const { dirname } = require("path");
 
 class ToFileStream extends Writable {
@@ -11,10 +11,9 @@ class ToFileStream extends Writable {
   // write is a private method that must be implemented by a class implementing
   // the writeable interface
   _write(chunk, encoding, cb) {
-    mkdir(dirname(chunk.path))
-      .then(() => fs.promises.writeFile(chunk.path, chunk.content))
-      .then(cb())
-      .catch(cb);
+    fs.mkdir(dirname(chunk.path), () => {
+      fs.promises.writeFile(chunk.path, chunk.content);
+    });
   }
 }
 
