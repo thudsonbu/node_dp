@@ -1,6 +1,6 @@
-const Transform = require("stream");
+const stream = require("stream");
 
-class ReplaceStream extends Transform {
+class ReplaceStream extends stream.Transform {
   constructor(searchStr, replaceStr, options) {
     super({ ...options });
     this.searchStr = searchStr;
@@ -9,7 +9,7 @@ class ReplaceStream extends Transform {
   }
 
   _transform(chunk, encoding, callback) {
-    const pieces = this.tail + chunk.split(this.searchStr);
+    const pieces = (this.tail + chunk).split(this.searchStr);
     const lastPiece = pieces[pieces.length - 1];
     const tailLen = this.searchStr.length - 1;
 
@@ -28,3 +28,5 @@ class ReplaceStream extends Transform {
     callback;
   }
 }
+
+module.exports = ReplaceStream;
