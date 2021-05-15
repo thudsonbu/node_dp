@@ -1,5 +1,5 @@
 const { Writable } = require("stream");
-const mkdir = require("fs");
+const { mkdir } = require("fs");
 const { dirname } = require("path");
 
 class ToFileStream extends Writable {
