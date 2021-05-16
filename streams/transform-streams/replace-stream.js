@@ -25,7 +25,7 @@ class ReplaceStream extends stream.Transform {
 
   _flush(callback) {
     this.push(this.tail);
-    callback;
+    callback();
   }
 }
 
