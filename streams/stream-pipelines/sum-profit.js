@@ -1,9 +1,9 @@
 const stream = require("stream");
 
 class SumProfit extends stream.Transform {
-  constructor({ ...options }) {
+  constructor(options) {
     options.objectMode = true;
-    super(options);
+    super({ ...options });
     this.sum = 0;
   }
 
