@@ -21,5 +21,9 @@
   "bugs": {
     "url": "https://github.com/thudsonbu/node_dp/issues"
   },
-  "homepage": "https://github.com/thudsonbu/node_dp#readme"
+  "homepage": "https://github.com/thudsonbu/node_dp#readme",
+  "dependencies": {
+    "split": "^1.0.1",
+    "superagent": "^6.1.0"
+  }
 }
