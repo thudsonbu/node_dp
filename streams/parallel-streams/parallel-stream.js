@@ -13,11 +13,7 @@ class ParallelStream extends Transform {
     this.running++;
 
     // dont wait on the asynchronous user transform function to run in parallel
-    this.userTransform(
-      chunk, 
-      enc, 
-      this.push.bind(this)
-    );
+    this.userTransform(chunk, enc, this.push.bind(this));
 
     done();
   }
@@ -42,3 +38,5 @@ class ParallelStream extends Transform {
     }
   }
 }
+
+module.exports = ParallelStream;
