@@ -25,5 +25,8 @@
   "dependencies": {
     "split": "^1.0.1",
     "superagent": "^6.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.27.0"
   }
 }
