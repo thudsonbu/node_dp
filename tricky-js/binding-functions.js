@@ -17,7 +17,8 @@ printName( person.getName ); // undefined
 
 /* This returns undefined because the this context of the getName() function is
 undefined. In order to add the this context of person to the function we can use
-.bind() which is a method of the function prototype */
+.bind() which is a method of the function prototype and returns a new function
+that has the this context of the object that is passed as a param */
 
 let newFunc = person.getName.bind( person );
 
