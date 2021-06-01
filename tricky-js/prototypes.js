@@ -31,3 +31,5 @@ Manager.prototype.constructor = Manager;
  * keyword to the WorkerBee constructor function.
  */
 let stephen = new Manager();
+
+console.log( stephen );
