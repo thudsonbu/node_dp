@@ -1,20 +1,22 @@
-const stream = require("stream");
+const stream = require( "stream" );
 
 class SumProfit extends stream.Transform {
-  constructor(options) {
+  constructor( options ) {
     options.objectMode = true;
-    super({ ...options });
+    super( { ...options } );
     this.sum = 0;
   }
 
-  _transform(object, encoding, callback) {
+  _transform( object, encoding, callback ) {
     this.sum += object.profit;
 
     callback();
   }
 
-  _flush(callback) {
-    this.push(this.sum);
+  _flush( callback ) {
+    this.push( this.sum );
     callback();
   }
 }
+
+module.exports = SumProfit;

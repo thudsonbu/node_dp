@@ -7,20 +7,20 @@
 // First at the top of the "heirarchy" we have employee, a function that returns
 // an object
 function Employee() {
-  this.name = 'stephen';
-  this.dept = 'general';
+  this.name = "stephen";
+  this.dept = "general";
 }
 
 // Then we have function to create a manager object that calls this() from the
 // employee class which takes the properties from employee and adds them to
 // the current this context which is the Manager obj being constructed
 function Manager() {
-  Employee.call(this);
+  Employee.call( this );
   this.reports = [];
 }
 
 // Specify that prototype for manager is the employee prototype
-Manager.prototype = Object.create(Employee.prototype);
+Manager.prototype = Object.create( Employee.prototype );
 // Add the manager function as the constructor for prototypes
 Manager.prototype.constructor = Manager;
 

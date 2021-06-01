@@ -1,18 +1,19 @@
-const { count } = require("console");
-const stream = require("stream");
+const stream = require( "stream" );
 
 class FilterByCountry extends stream.Transform {
-  constructor(country, options) {
+  constructor( country, options ) {
     options.objectMode = true;
-    super({ ...options });
+    super( { ...options } );
     this.country = country;
   }
 
-  _transform(object, encoding, callback) {
-    if (object.country === this.country) {
-      this.push(object);
+  _transform( object, encoding, callback ) {
+    if ( object.country === this.country ) {
+      this.push( object );
     }
 
     callback();
   }
 }
+
+module.exports = FilterByCountry;

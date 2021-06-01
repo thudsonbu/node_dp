@@ -1,44 +1,44 @@
-const stream = require("stream");
+const stream = require( "stream" );
 
 class CSVParse extends stream.Transform {
-  constructor(options) {
+  constructor( options ) {
     options.objectMode = true;
-    super({ ...options });
+    super( { ...options } );
     this.properties = [];
     this.tail = "";
   }
 
-  _transform(chunk, encoding, callback) {
-    let cleanCut = chunk.endsWith("\n");
-    let lines = (this.tail + chunk).split("\n");
+  _transform( chunk, encoding, callback ) {
+    let cleanCut = chunk.endsWith( "\n" );
+    let lines = ( this.tail + chunk ).split( "\n" );
 
-    if (!cleanCut) {
+    if ( !cleanCut ) {
       this.tail = lines.pop();
     } else {
       this.tail = "";
     }
 
-    if (!this.properties.length && lines.length > 0) {
-      this.properties = lines.shift().split(",");
+    if ( !this.properties.length && lines.length > 0 ) {
+      this.properties = lines.shift().split( "," );
     }
 
-    lines.forEach((line) => {
-      if (line.length) {
+    lines.forEach( ( line ) => {
+      if ( line.length ) {
         let object = {};
-        let datum = line.split(",");
+        let datum = line.split( "," );
 
-        for (let i = 0; i < this.properties.length; i++) {
+        for ( let i = 0; i < this.properties.length; i++ ) {
           object[this.properties[i]] = datum[i];
         }
 
         this.push();
       }
-    });
+    } );
 
     callback();
   }
 
-  _flush(callback) {
+  _flush( callback ) {
     callback();
   }
 }

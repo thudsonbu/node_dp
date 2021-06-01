@@ -1,7 +1,7 @@
-const { pipeline }    = require('stream');
-const csvParse        = require('./csv-parse');
-const filterByCountry = require('./filter-by-country');
-const sumProfit       = require('./sum-profit');
+const { pipeline }    = require( "stream" );
+const csvParse        = require( "./csv-parse" );
+const filterByCountry = require( "./filter-by-country" );
+const sumProfit       = require( "./sum-profit" );
 
 pipeline(
   csvParse,
@@ -10,8 +10,8 @@ pipeline(
 
   ( error ) => {
     if ( error ) {
-      console.error( err );
+      console.error( error );
       process.exit( 1 );
     }
   }
-)
+);
