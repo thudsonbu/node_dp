@@ -2,7 +2,7 @@ const { createReadStream, createWriteStream } = require( "fs" );
 const { pipeline } = require( "stream" );
 const split = require( "split" );
 const superagent = require( "superagent" );
-const ParallelStream = require( "./unordered-parallel-stream" );
+const ParallelStream = require( "./unordered-stream" );
 
 pipeline(
   createReadStream( process.argv[2] ),

@@ -23,6 +23,3 @@ that has the this context of the object that is passed as a param */
 let newFunc = person.getName.bind( person );
 
 printName( newFunc );
-
-
-
