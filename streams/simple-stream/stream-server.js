@@ -19,9 +19,9 @@ const server = createServer( ( req, res ) => {
 
   req
     .pipe( createDecipheriv( "aes192", secret, initVector ) )
-    .pipe( createGunzip() )
+    .pipe( createGunzip( ) )
     .pipe( createWriteStream( destFilename ) )
-    .on( "finish", () => {
+    .on( "finish", ( ) => {
       res.writeHead( 201, { "Content-Type": "text/plain" } );
       res.end( "OK\n" );
 
@@ -29,4 +29,4 @@ const server = createServer( ( req, res ) => {
     } );
 } );
 
-server.listen( 3000, () => console.log( "Listening on port 3000" ) );
+server.listen( 3000, ( ) => console.log( "Listening on port 3000" ) );

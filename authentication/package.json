@@ -1,0 +1,16 @@
+{
+  "name": "authentication",
+  "version": "1.0.0",
+  "description": "authentication with sessions in express and custom JWT implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "authentication",
+    "sessions",
+    "JWT"
+  ],
+  "author": "tom hudson",
+  "license": "ISC"
+}

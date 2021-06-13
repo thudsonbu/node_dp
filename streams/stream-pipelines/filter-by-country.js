@@ -2,8 +2,9 @@ const stream = require( "stream" );
 
 class FilterByCountry extends stream.Transform {
   constructor( country, options ) {
-    options.objectMode = true;
     super( { ...options } );
+
+    options.objectMode = true;
     this.country = country;
   }
 
