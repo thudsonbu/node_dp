@@ -1,56 +1,51 @@
-const express    = require('express');
-const mongoose   = require('mongoose');
-const session    = require('express-session');
-const passport   = require('passport');
-const crypto     = require('crypto');
-const routes     = require('./routes');
-const db         = require('./db');
+const express    = require( "express" );
+const mongoose   = require( "mongoose" );
+const session    = require( "express-session" );
+const passport   = require( "passport" );
+const crypto     = require( "crypto" );
+const routes     = require( "./routes" );
+const db         = require( "./db" );
 
-// Package documentation - https://www.npmjs.com/package/connect-mongo
-const MongoStore = require('connect-mongo')(session);
+const MongoStore = require( "connect-mongo" )( session );
 
-// Need to require the entire Passport config module so app.js knows about it
-require('./config/passport');
+require( "dotenv" ).config();
 
-/**
- * -------------- GENERAL SETUP ----------------
- */
+const app = express();
 
-// Gives us access to variables set in the .env file via `process.env.VARIABLE_NAME` syntax
-require('dotenv').config();
+app.use( express.json() );
+app.use( express.urlencoded({ extended: true }) );
 
-// Create the Express application
-var app = express();
+// setup passport store
+const sessionStore = new MongoStore({
+  mongooseConnection: db,
+  collection: "sessions"
+});
 
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+// get access to .env file
+require( "dotenv" ).config();
 
+// configure express-session (passport will use this)
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24
+    }
+  })
+);
 
-/**
- * -------------- SESSION SETUP ----------------
- */
+// pull in passport config
+require( "./auth/passport" );
 
-// TODO
+// add passport middleware to express
+app.use( passport.initialize() );
+app.use( passport.session() );
 
-/**
- * -------------- PASSPORT AUTHENTICATION ----------------
- */
+// add routes to express
+app.use( routes );
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-
-/**
- * -------------- ROUTES ----------------
- */
-
-// Imports all of the routes from ./routes/index.js
-app.use(routes);
-
-
-/**
- * -------------- SERVER ----------------
- */
-
-// Server listens on http://localhost:3000
-app.listen(3000);
+// set app to listen on port 3000
+app.listen( 3000, () => { console.log( "app listening on port 3000" ); });
