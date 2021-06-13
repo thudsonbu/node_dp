@@ -1,10 +1,10 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const session = require('express-session');
-var passport = require('passport');
-var crypto = require('crypto');
-var routes = require('./routes');
-const connection = require('./config/database');
+const express    = require('express');
+const mongoose   = require('mongoose');
+const session    = require('express-session');
+const passport   = require('passport');
+const crypto     = require('crypto');
+const routes     = require('./routes');
+const db         = require('./db');
 
 // Package documentation - https://www.npmjs.com/package/connect-mongo
 const MongoStore = require('connect-mongo')(session);

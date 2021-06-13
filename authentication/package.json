@@ -4,7 +4,8 @@
   "description": "authentication with sessions in express and custom JWT implementation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
   },
   "keywords": [
     "authentication",
@@ -21,5 +22,8 @@
     "mongoose": "^5.7.12",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.28.0"
   }
 }
