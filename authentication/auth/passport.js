@@ -11,12 +11,13 @@ const User = db.models.User;
 const verifyCallback = ( username, password, done ) => {
 
   User.find({ username: username })
-    .then( ( user ) => {
+    .then( ( [ user ] ) => {
 
       if ( !user ) {
         // on failure passport will return a 401
         return done( null, false );
       }
+
 
       const isValid = validatePassword( password, user.hash, user.salt );
 
