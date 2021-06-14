@@ -3,13 +3,14 @@ const passport        = require( "passport" );
 const { genPassword } = require( "../auth/passwordUtils" );
 const db              = require( "../db" );
 const user            = require( "../models/user" );
+const { isAuth }      = require( "../routes/authMiddleware" );
 
 
 router.post( "/login",
   passport.authenticate( "local",
     {
       failureRedirect: "/login-failure",
-      successRedirect: "login-success"
+      successRedirect: "/login-success"
     }
   )
 );
@@ -75,6 +76,10 @@ router.get( "/login-success", ( req, res, next ) => {
 
 router.get( "/login-failure", ( req, res, next ) => {
   res.send( "You entered the wrong password." );
+});
+
+router.get( "/protected-route", isAuth, ( req, res, next ) => {
+  res.send( "Welcome to the protected route" );
 });
 
 module.exports = router;
