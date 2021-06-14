@@ -1,9 +1,9 @@
-const router          = require( "express" ).Router();
-const passport        = require( "passport" );
-const { genPassword } = require( "../auth/passwordUtils" );
-const db              = require( "../db" );
-const user            = require( "../models/user" );
-const { isAuth }      = require( "../routes/authMiddleware" );
+const router              = require( "express" ).Router();
+const passport            = require( "passport" );
+const { genPassword }     = require( "../auth/passwordUtils" );
+const db                  = require( "../db" );
+const user                = require( "../models/user" );
+const { isAuth, isAdmin } = require( "../routes/authMiddleware" );
 
 
 router.post( "/login",
@@ -18,7 +18,7 @@ router.post( "/login",
 router.post( "/register", ( req, res, next ) => {
   const saltHash = genPassword( req.body.password );
 
-  const salt = saltHash.salt;
+  const  salt = saltHash.salt;
   const hash = saltHash.hash;
 
   const newUser = new user({
@@ -80,6 +80,10 @@ router.get( "/login-failure", ( req, res, next ) => {
 
 router.get( "/protected-route", isAuth, ( req, res, next ) => {
   res.send( "Welcome to the protected route" );
+});
+
+router.get( "/admin-route", isAdmin, ( req, res, next ) => {
+  res.send( "Welcome to the admin route." );
 });
 
 module.exports = router;
