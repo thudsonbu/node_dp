@@ -1,5 +1,5 @@
 # Summary
-This repository demonstrates how to properly introduce session based authentication with express. There are simple routes that demonstrate the system in action and below you can find a complete explanation of what the more interesting parts of the code are doing. 
+This repository demonstrates how to properly introduce session based authentication with express using the hash and salt method to the IEEE spec. There are simple routes that demonstrate the system in action and below you can find a complete explanation of what the more interesting parts of the code are doing. 
 
 # Passport Local Strategy
 
