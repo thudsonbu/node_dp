@@ -1,0 +1,14 @@
+{
+  "name": "jwt-auth",
+  "version": "1.0.0",
+  "description": "high level jwt auth example",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "jwt"
+  ],
+  "author": "Tom Hudson",
+  "license": "ISC"
+}
