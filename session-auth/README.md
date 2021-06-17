@@ -1,6 +1,57 @@
 # Summary
 This repository demonstrates how to properly introduce session based authentication with express using the hash and salt method to the IEEE spec. There are simple routes that demonstrate the system in action and below you can find a complete explanation of what the more interesting parts of the code are doing. 
 
+# Background
+
+### Quick Definitions
+
+*Authentication* - identify that the user is who they say they are
+
+*Authorization* - what permissions does the user have
+
+*O-Auth* - fancier authenticaton system that also adds in the ability to manage permissions with the o-auth provider (like google)
+
+### Passport.js
+
+`Passport.js` is a middleware (it goes between our backend logit and the router). 
+
+Steps:
+
+1. Pickup the strategy authentication strategy that is being used
+2. Is the user authenticated
+    1. If authentication is succesful then let user into express route else go away
+    2. If authentication fails return `401` status code (unauthorized)
+
+### HTTP Headers
+
+Headers are sent with every http request and give information about a given request. They can be broken into three categories:
+
+*General Headers* - the general metadata like what type of request was made, what was the status code that was returned, what ip address was resolved by the DNS...
+
+*Request Headers* - instructions for the server that the client is requesting data from like what type of data we accept (html, xml...), what route we are going to, what browser is being used also known as the `user-agent`,  
+
+*Response Headers* - instructions for the client as to how to interact with the server, gives what kind of data was sent back, has the `set-cookie` header
+
+For more info on headers see [https://developer.mozilla.org/en-US/docs/Web/HTTP/Header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)s 
+
+### Session and Cookies
+
+The first thing to think about when thinking about cookies is that http is a *stateless protocol*, it will forget what the user has done on the site unless we have a way to remember that.
+
+*Session* based authentication sends a cookie back to the browser which indicates the the user has been authenticated for additional requests by adding `set-cookie` in teh response header.
+
+When the client reponds the next time it will send in the *request headers* a `cookie` with key value pairs for each of the cookies that were give in `set-cookie` by the initial response
+
+Once the client has the cookie, the other thing to consider is how long the cookie should last. We do that with the `expires` piece of the http header.
+
+# Middleware
+
+Middle wearch are functions that the `request`, `response`, and `next` (callback) are passed through on their way to the routes. These parameters are passed to each route.  You can have as many of them as you want. If you want to go to the next step in the chain then you call `next` if you want to send something back imediately then you would do `response.send()` . 
+
+In express, `app.use()` adds a piece to the chain of middleware. 
+
+One pattern that is pretty common when chaining middleware and often come in handy is adding properties to the objects that are being passed through the middleware.
+
 # Passport Local Strategy
 
 ### Create a Strategy (passport config)
