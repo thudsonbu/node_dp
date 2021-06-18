@@ -10,5 +10,8 @@
     "jwt"
   ],
   "author": "Tom Hudson",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.28.0"
+  }
 }
