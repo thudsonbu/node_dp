@@ -1,10 +1,9 @@
 const express     = require( "express" );
 const mongoose    = require( "mongoose" );
 const passport    = require( "passport" );
-// eslint-disable-next-line
-const db          = require( "./db" );
 const app         = express();
 
+require( "./db" );
 
 // configure passport
 require( "./config/passport" )( passport );

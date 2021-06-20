@@ -1,6 +1,6 @@
 const fs   = require( "fs" );
 const path = require( "path" );
-const User = require( "mongoose" ).model( "User" );
+const User = require( "../models/user" );
 
 // passports jwt strategy implementation
 const Jwtstrategy = require( "passport-jwt" ).Strategy;
