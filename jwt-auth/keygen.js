@@ -2,7 +2,7 @@ const crypto = require( "crypto" );
 const fs     = require( "fs" );
 
 /**
- * Generates an public private key pair to be used by the app.
+ * Generates a public private key pair to be used by the app.
  */
 function generateKeyPair() {
 
