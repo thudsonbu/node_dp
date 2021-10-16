@@ -1,4 +1,3 @@
-const { createHmac } = require('crypto');
 
 // original class
 class SecureResource {
