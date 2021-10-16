@@ -3,7 +3,7 @@ const passport            = require( "passport" );
 const { genPassword }     = require( "../auth/passwordUtils" );
 const db                  = require( "../db" );
 const user                = require( "../models/user" );
-const { isAuth, isAdmin } = require( "../routes/authMiddleware" );
+const { isAuth, isAdmin } = require( "./authMiddleware" );
 
 
 router.post( "/login",
