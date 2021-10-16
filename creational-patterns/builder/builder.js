@@ -31,7 +31,6 @@ class Car {
 }
 
 // builder
-
 class CarBuilder {
   withName( name ) {
     this.name = name;
@@ -65,7 +64,7 @@ class CarBuilder {
 
 const myCar = new CarBuilder()
   .withName( 'Subaru' )
-  .withDoors( 'Cool', '4 ')
+  .withDoors( 'Cool', 4 )
   .build();
 
 console.log( myCar );
