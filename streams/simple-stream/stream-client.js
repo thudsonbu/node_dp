@@ -34,5 +34,5 @@ createReadStream( filename )
   .on( "finish", () => {
     console.log( "File sent successfully" );
 
-    process.exit();
+    process.exit( 0 );
   } );
