@@ -1,7 +1,7 @@
-const { createServer } = require( "http" );
-const { createGunzip } = require( "zlib" );
-const { createWriteStream } = require( "fs" );
-const { basename, join } = require( "path" );
+const { createServer }                  = require( "http" );
+const { createGunzip }                  = require( "zlib" );
+const { createWriteStream }             = require( "fs" );
+const { basename, join }                = require( "path" );
 const { createDecipheriv, randomBytes } = require( "crypto" );
 
 const secret = randomBytes( 24 );

@@ -6,7 +6,7 @@ import * as crypto from "crypto";
  * by their respective public keys.
  */
 class Transaction {
-  
+
   constructor(
     public amount: number,
     public payer:  string, // payer public key
@@ -25,7 +25,7 @@ class Transaction {
 class Block {
   // a random number used in problem for proof of work
   public nonce = Math.round( Math.random() * 999999999 );
-  
+
   constructor(
     public prevHash: string,
     public transaction: Transaction,
@@ -38,7 +38,7 @@ class Block {
 
     // add string to hash
     hash.update( str ).end();
-    
+
     return hash.digest( 'hex' );
   }
 }
@@ -52,8 +52,8 @@ class Chain {
   chain: Block[];
 
   constructor() {
-    this.chain = [ new Block( 
-      '', 
+    this.chain = [ new Block(
+      '',
       new Transaction( 100, 'genesis', 'thudsonbu' ) // genisis block of blockchain
     )];
   }
@@ -67,9 +67,9 @@ class Chain {
    * problem. This is used to avoid a double spending issue in a blockchain.
    * If two blocks are created, the first to be verified by solving the mining
    * problem and confirmed across all nodes will be added to the blockchain. If
-   * the two are confirmed simultaneously, the transaction with the most 
+   * the two are confirmed simultaneously, the transaction with the most
    * confirmations will be added to the chain.
-   * @param nonce 
+   * @param nonce
    */
   mine( nonce: number ) {
     let solution = 1;
@@ -90,7 +90,7 @@ class Chain {
       solution += 1;
     }
   }
-  
+
   addBlock( transaction: Transaction, senderPublicKey: string, signature: Buffer ) {
     // create a verifier for the transaction
     const verifier = crypto.createVerify( 'SHA256' );
@@ -110,7 +110,7 @@ class Chain {
 /**
  * The wallet functions as the key manager for a user. When a transaction is
  * created, a hash of the transaction data is first created using sha256. In
- * order to make sure that the transaction was made by the payer, the hash is 
+ * order to make sure that the transaction was made by the payer, the hash is
  * signed with the payers private key. This makes sure that the transaction
  * cannot be changed as the signed hash can be verified by comparing it with
  * a hash of plain text transaction data after decrypting it with the public
@@ -142,7 +142,7 @@ class Wallet {
 
     // sign the hash with the private key
     const signature = sign.sign( this.privateKey );
-    
+
     // add the new block to the chian
     Chain.instance.addBlock( transaction, this.publicKey, signature );
   }

@@ -4,9 +4,9 @@ const { createReadStream } = require( "fs" );
 const { basename } = require( "path" );
 const { createCipheriv, randomBytes } = require( "crypto" );
 
-const filename = process.argv[2];
+const filename   = process.argv[2];
 const serverHost = process.argv[3];
-const secret = process.argv[4];
+const secret     = Buffer.from( process.argv[4], "hex" );
 
 const initVector = randomBytes( 16 );
 
@@ -32,5 +32,7 @@ createReadStream( filename )
   .pipe( createCipheriv( "aes192", secret, initVector ) )
   .pipe( req )
   .on( "finish", () => {
-    console.log( "File sent succesfully" );
+    console.log( "File sent successfully" );
+
+    process.exit();
   } );
