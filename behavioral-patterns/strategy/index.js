@@ -1,5 +1,5 @@
 
-const Config       = require('./config');
+const Config       = require('./classes/config');
 const jsonStrategy = require('./strategies/json');
 
 const config = new Config( jsonStrategy );
