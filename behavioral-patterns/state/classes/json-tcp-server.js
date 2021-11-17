@@ -25,6 +25,8 @@ class JSONServer {
         console.log( 'server created' );
         this.con = con;
 
+        consol.log( con );
+
         con.on( 'end', () => {
           console.log('client disconnected');
           this.con = null;
