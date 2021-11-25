@@ -58,12 +58,19 @@ function promiseCallback() {
   });
 }
 
+async function asyncFunction() {
+  console.log('asyncFunction')
+
+  return null;
+}
+
 function sync() {
   console.log( 'sync' );
 }
 
 promise();
 callback();
+asyncFunction();
 promiseCallback();
 then();
 sync();
