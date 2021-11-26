@@ -9,21 +9,24 @@ const firstLetter = stringIterator.next();
 
 console.log( firstLetter );
 
-// counter is an iterable with an iterator function 
+// counter is an iterable with an iterator function that returns increments
 class Counter {
-  constructor( increment ) {
+  constructor( increment, maximum ) {
     this.increment = increment;
+    this.maximum = maximum;
   }
 
   [Symbol.iterator]() {
+    const increment = this.increment;
+    const maximum   = this.maximum;
+
     let count = 0;
-    let increment = this.increment;
 
     return {
       next: () => {
         count = count + increment;
 
-        if ( count < 100 ) {
+        if ( count < maximum ) {
           return {
             value: count,
             done: false
@@ -38,8 +41,8 @@ class Counter {
   }
 }
 
-const threes = new Counter( 3 );
+const threes = new Counter( 3, 10 );
 
 for ( const number of threes ) {
-  console.log( number );
+  console.log( number ); // 3, 6, 9
 }
