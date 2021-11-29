@@ -1,3 +1,5 @@
+const path = require('path');
+
 /**
  * When a function is created, it is given a closure that includes
  * the lexical environment around the function. It gives access to the
@@ -23,16 +25,61 @@ outer(); // data
  * returned.
  */
 
+const outerData = 'outer data';
+
 function functionFactory() {
-  const innerProp = 'prop';
+  const innerData = 'inner data';
 
   function secondFunction() {
-    console.log( innerProp );
+    console.log( innerData );
+    console.log( outerData );
   }
 
   return secondFunction;
 }
 
-const fun = functionFactory( 'prop' );
+const fun = functionFactory();
 
 fun(); // prop
+
+/**
+ * even props to a factory function are included in the lexical scope
+ */
+
+function makePrefixLogger( prefix ) {
+  return function( log ) {
+    console.log( prefix + ': ' + log );
+  }
+}
+
+const logger = makePrefixLogger( path.basename( __filename ) );
+
+logger('my log'); // lg: my log
+
+/**
+ * Closures also allow you to create private properties in objects using the
+ * factory pattern
+ */
+
+function createUser( username, password ) {
+  return {
+    getUsername() {
+      return username;
+    },
+
+    getPassword() {
+      return password.split('').fill('*').join('');
+    },
+
+    validatePassword( input ) {
+      return password === input;
+    }
+  }
+}
+
+const user = createUser( 'username', 'password' );
+
+console.log( user.getUsername() ); // username
+console.log( user.getPassword() ); // ********
+console.log( user.password ); // undefined
+console.log( user.validatePassword('password') ); // true
