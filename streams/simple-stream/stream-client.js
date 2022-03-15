@@ -1,7 +1,7 @@
-const { request } = require( "http" );
-const { createGzip } = require( "zlib" );
-const { createReadStream } = require( "fs" );
-const { basename } = require( "path" );
+const { request }                     = require( "http" );
+const { createGzip }                  = require( "zlib" );
+const { createReadStream }            = require( "fs" );
+const { basename }                    = require( "path" );
 const { createCipheriv, randomBytes } = require( "crypto" );
 
 const filename   = process.argv[2];
