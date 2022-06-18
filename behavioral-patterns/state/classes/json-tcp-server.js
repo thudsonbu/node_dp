@@ -9,9 +9,8 @@ class JSONServer {
 
   async connect( port ) {
 
-    await this.createServer();
-
-    await this.listen( port );
+    this.createServer();
+    this.listen( port );
 
     this.server.on( 'error', ( err ) => {
       throw err;
@@ -22,17 +21,20 @@ class JSONServer {
     return new Promise( ( resolve, reject ) => {
 
       this.server = net.createServer( con => {
-        console.log( 'server created' );
+        console.log('client connected');
+
         this.con = con;
 
-        consol.log( con );
+        con.on( 'data', d => {
+          console.log( 'received data', d );
+
+          this.sendJSON('hi');
+        });
 
         con.on( 'end', () => {
           console.log('client disconnected');
           this.con = null;
         });
-
-        resolve();
       });
 
     });
