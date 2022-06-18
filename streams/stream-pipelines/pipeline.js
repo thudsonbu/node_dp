@@ -1,7 +1,7 @@
 const { pipeline }    = require( "stream" );
-const csvParse        = require( "./csv-parse" );
-const filterByCountry = require( "./filter-by-country" );
-const sumProfit       = require( "./sum-profit" );
+const csvParse        = require( "./streams/csv-parse" );
+const filterByCountry = require( "./streams/filter-by-country" );
+const sumProfit       = require( "./streams/sum-profit" );
 
 pipeline(
   csvParse,

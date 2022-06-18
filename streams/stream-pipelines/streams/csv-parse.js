@@ -31,7 +31,7 @@ class CSVParse extends stream.Transform {
           object[this.properties[i]] = datum[i];
         }
 
-        this.push();
+        this.push( object );
       }
     } );
 

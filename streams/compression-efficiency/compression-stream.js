@@ -18,7 +18,6 @@ const rl = readline.createInterface( {
   output: process.stdout
 } );
 
-
 function compress( filename, algorithm = "" ) {
 
   return new Promise( ( resolve, reject ) => {

@@ -2,10 +2,12 @@ const { createReadStream, createWriteStream } = require( "fs" );
 const { pipeline } = require( "stream" );
 const split = require( "split" );
 const superagent = require( "superagent" );
-const ParallelStream = require( "./unordered-stream" );
+const ParallelStream = require( "./streams/unordered-stream" );
+
+const filepath = "./input" + process.argv[2];
 
 pipeline(
-  createReadStream( process.argv[2] ),
+  createReadStream( filepath ),
   split(),
 
   new ParallelStream( async( url, enc, push, done ) => {
@@ -23,7 +25,7 @@ pipeline(
     }
   } ),
 
-  createWriteStream( "results.txt" ),
+  createWriteStream( "./output/results.txt" ),
 
   ( error ) => {
     if ( error ) {
