@@ -15,17 +15,17 @@
 function callback() {
   setTimeout(
     () => {
-      console.log( 'callback' );
+      console.log('callback');
     },
     0
-  )
+  );
 }
 
 function then() {
   count = 0;
 
   return Promise.resolve().then( () => {
-    console.log( 'then' );
+    console.log('then');
 
     if ( count === 0 ) {
       then();
@@ -37,19 +37,19 @@ function then() {
 
 function promise() {
   return new Promise( ( resolve, reject ) => {
-    console.log( 'promise' );
+    console.log('promise');
     resolve();
   });
 }
 
 function promiseCallback() {
-  let count = 0;
+  const count = 0;
 
   return new Promise( ( resolve, reject ) => {
 
     setTimeout(
       () => {
-        console.log( 'promiseCallback' );
+        console.log('promiseCallback');
         resolve();
       },
       0
@@ -59,13 +59,13 @@ function promiseCallback() {
 }
 
 async function asyncFunction() {
-  console.log('asyncFunction')
+  console.log('asyncFunction');
 
   return null;
 }
 
 function sync() {
-  console.log( 'sync' );
+  console.log('sync');
 }
 
 promise();

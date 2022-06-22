@@ -1,7 +1,7 @@
 
 // class to be created
 class Car {
-  constructor (
+  constructor(
     name,
     doorType,
     doorCount,
@@ -20,7 +20,7 @@ class Car {
   }
 
   drive() {
-    this.state = 'driving'
+    this.state = 'driving';
     return this.state;
   }
 
@@ -58,13 +58,13 @@ class CarBuilder {
       this.wheelType,
       this.wheelSize,
       this.wheelCount
-    )
+    );
   }
 }
 
 const myCar = new CarBuilder()
-  .withName( 'Subaru' )
-  .withDoors( 'Cool', 4 )
-  .build();
+.withName('Subaru')
+.withDoors( 'Cool', 4 )
+.build();
 
 console.log( myCar );

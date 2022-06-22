@@ -1,5 +1,5 @@
-const objectPath = require("object-path");
-const fs         = require("fs");
+const objectPath = require('object-path');
+const fs         = require('fs');
 
 class Config {
   constructor( formatStrategy ) {
@@ -16,7 +16,7 @@ class Config {
   }
 
   async load( filePath ) {
-    console.log(`Deserializing from ${filePath}`);
+    console.log( `Deserializing from ${ filePath }` );
 
     this.data = this.formatStrategy.deserialize(
       fs.readFileSync( filePath, 'utf8' )
@@ -24,7 +24,7 @@ class Config {
   }
 
   async save( filePath ) {
-    console.log(`Serializing from ${filePath}`);
+    console.log( `Serializing from ${ filePath }` );
 
     fs.writeFileSync(
       filePath,

@@ -7,8 +7,8 @@
 // First at the top of the "heirarchy" we have employee, a function that returns
 // an object
 function Employee() {
-  this.name = "stephen";
-  this.dept = "general";
+  this.name = 'stephen';
+  this.dept = 'general';
 }
 
 // Then we have function to create a manager object that calls this() from the
@@ -30,6 +30,6 @@ Manager.prototype.constructor = Manager;
  * of Manager.prototype and passes this new object as the value of the this
  * keyword to the WorkerBee constructor function.
  */
-let stephen = new Manager();
+const stephen = new Manager();
 
 console.log( stephen );

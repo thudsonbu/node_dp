@@ -49,7 +49,7 @@ fun(); // prop
 function makePrefixLogger( prefix ) {
   return function( log ) {
     console.log( prefix + ': ' + log );
-  }
+  };
 }
 
 const logger = makePrefixLogger( path.basename( __filename ) );
@@ -74,7 +74,7 @@ function createUser( username, password ) {
     validatePassword( input ) {
       return password === input;
     }
-  }
+  };
 }
 
 const user = createUser( 'username', 'password' );

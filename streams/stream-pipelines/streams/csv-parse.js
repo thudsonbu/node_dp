@@ -1,39 +1,39 @@
-const stream = require( "stream" );
+const stream = require('stream');
 
 class CSVParse extends stream.Transform {
   constructor( options ) {
     options.objectMode = true;
-    super( { ...options } );
+    super({ ...options });
     this.properties = [];
-    this.tail = "";
+    this.tail = '';
   }
 
   _transform( chunk, encoding, callback ) {
-    let cleanCut = chunk.endsWith( "\n" );
-    let lines = ( this.tail + chunk ).split( "\n" );
+    const cleanCut = chunk.endsWith('\n');
+    const lines = ( this.tail + chunk ).split('\n');
 
     if ( !cleanCut ) {
       this.tail = lines.pop();
     } else {
-      this.tail = "";
+      this.tail = '';
     }
 
     if ( !this.properties.length && lines.length > 0 ) {
-      this.properties = lines.shift().split( "," );
+      this.properties = lines.shift().split(',');
     }
 
     lines.forEach( ( line ) => {
       if ( line.length ) {
-        let object = {};
-        let datum = line.split( "," );
+        const object = {};
+        const datum = line.split(',');
 
         for ( let i = 0; i < this.properties.length; i++ ) {
-          object[this.properties[i]] = datum[i];
+          object[ this.properties[ i ] ] = datum[ i ];
         }
 
         this.push( object );
       }
-    } );
+    });
 
     callback();
   }

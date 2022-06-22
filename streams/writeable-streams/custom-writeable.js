@@ -1,11 +1,11 @@
-const { Writable } = require( "stream" );
-const fs = require( "fs" );
-const { dirname } = require( "path" );
+const { Writable } = require('stream');
+const fs           = require('fs');
+const { dirname }  = require('path');
 
 class ToFileStream extends Writable {
   constructor( options ) {
     // setting object mode will automatically handle maintaining objects
-    super( { ...options, objectMode: true } );
+    super({ ...options, objectMode: true });
   }
 
   // write is a private method that must be implemented by a class implementing
@@ -13,7 +13,7 @@ class ToFileStream extends Writable {
   _write( chunk, encoding, cb ) {
     fs.mkdir( dirname( chunk.path ), () => {
       fs.promises.writeFile( chunk.path, chunk.content );
-    } );
+    });
   }
 }
 

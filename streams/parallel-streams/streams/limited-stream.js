@@ -1,8 +1,8 @@
-const { Transform } = require( "stream" );
+const { Transform } = require('stream');
 
 class ParallelStream extends Transform {
   constructor( concurrency, userTransform, opts ) {
-    super( { objectMode: true, ...opts } );
+    super({ objectMode: true, ...opts });
 
     this.concurrency = concurrency;
     this.userTransform = userTransform;
@@ -36,7 +36,7 @@ class ParallelStream extends Transform {
     this.running--;
 
     if ( err ) {
-      return this.emit( "error", err );
+      return this.emit( 'error', err );
     }
 
     this.continueCb = null;

@@ -1,10 +1,10 @@
-const { createReadStream, createWriteStream } = require( "fs" );
-const { pipeline } = require( "stream" );
-const split = require( "split" );
-const superagent = require( "superagent" );
-const ParallelStream = require( "./streams/unordered-stream" );
+const { createReadStream, createWriteStream } = require('fs');
+const { pipeline }                            = require('stream');
+const split                                   = require('split');
+const superagent                              = require('superagent');
+const ParallelStream                          = require('./streams/unordered-stream');
 
-const filepath = "./input" + process.argv[2];
+const filepath = './input' + process.argv[ 2 ];
 
 pipeline(
   createReadStream( filepath ),
@@ -17,15 +17,15 @@ pipeline(
 
     try {
       await superagent.head( url, { timeout: 5 * 1000 } );
-      console.log( `${url} is up` );
-      push( `${url} is up\n` );
+      console.log( `${ url } is up` );
+      push( `${ url } is up\n` );
     } catch ( error ) {
-      console.log( `${url} is down` );
-      push( `${url} is down\n` );
+      console.log( `${ url } is down` );
+      push( `${ url } is down\n` );
     }
-  } ),
+  }),
 
-  createWriteStream( "./output/results.txt" ),
+  createWriteStream('./output/results.txt'),
 
   ( error ) => {
     if ( error ) {
@@ -35,4 +35,4 @@ pipeline(
   }
 );
 
-console.log( "All urls checked" );
+console.log('All urls checked');

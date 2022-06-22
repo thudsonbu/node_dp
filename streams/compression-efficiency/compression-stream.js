@@ -1,70 +1,70 @@
 const {
   createBrotliCompress,
   createGzip,
-  createDeflate,
-} = require( "zlib" );
+  createDeflate
+} = require('zlib');
 
 const {
   createReadStream,
   createWriteStream
-} = require( "fs" );
+} = require('fs');
 
-const readline    = require( "readline" );
-const path        = require( "path" );
-const TotalLength = require( "./total-length" );
+const readline    = require('readline');
+const path        = require('path');
+const TotalLength = require('./total-length');
 
-const rl = readline.createInterface( {
+const rl = readline.createInterface({
   input:  process.stdin,
   output: process.stdout
-} );
+});
 
-function compress( filename, algorithm = "" ) {
+function compress( filename, algorithm = '' ) {
 
   return new Promise( ( resolve, reject ) => {
 
     const inputFilepath = path.join(
       __dirname,
-      "./input",
+      './input',
       filename
     );
 
     const outputFilepath = path.join(
       __dirname,
-      "./output",
-      filename + ".bin"
+      './output',
+      filename + '.bin'
     );
 
     const compressionAlgorithm = determineMethod( algorithm );
     const inputStream          = createReadStream( inputFilepath );
-    const totalLengthBefore    = new TotalLength( {}, "size before: " );
-    const totalLengthAfter     = new TotalLength( {}, "size after: " );
+    const totalLengthBefore    = new TotalLength( {}, 'size before: ' );
+    const totalLengthAfter     = new TotalLength( {}, 'size after: ' );
 
-    console.time( "compression-test" );
+    console.time('compression-test');
 
     inputStream
-      .pipe( totalLengthBefore )
-      .pipe( compressionAlgorithm() )
-      .pipe( totalLengthAfter )
-      .pipe( createWriteStream( outputFilepath ) )
-      .on( "finish", () => {
+    .pipe( totalLengthBefore )
+    .pipe( compressionAlgorithm() )
+    .pipe( totalLengthAfter )
+    .pipe( createWriteStream( outputFilepath ) )
+    .on( 'finish', () => {
 
-        console.log( "compression successful" );
-        console.timeEnd( "compression-test" );
+      console.log('compression successful');
+      console.timeEnd('compression-test');
 
-        resolve();
-      } ).on( "error", ( err ) => {
+      resolve();
+    }).on( 'error', ( err ) => {
 
-        console.log( err.message );
-        reject( err );
-      } );
-  } );
+      console.log( err.message );
+      reject( err );
+    });
+  });
 }
 
 function determineMethod( algorithm ) {
 
-  if ( algorithm === "brotli" ) {
+  if ( algorithm === 'brotli' ) {
     return createBrotliCompress;
-  } else if ( algorithm === "deflate" ) {
+  } else if ( algorithm === 'deflate' ) {
     return createDeflate;
   } else {
     return createGzip;
@@ -77,24 +77,24 @@ function getUserInput( query ) {
 
     rl.question( query, ( response ) => {
       resolve( response );
-    } );
+    });
 
-  } );
+  });
 }
 
 async function main() {
 
   const filename = await getUserInput(
-    "enter the name of the file in ./input that you would like to compress:\n"
+    'enter the name of the file in ./input that you would like to compress:\n'
   );
 
   const algorithm = await getUserInput(
-    "compression algorithm ( brotli, deflate, gzip ):\n"
+    'compression algorithm ( brotli, deflate, gzip ):\n'
   );
 
   rl.close();
 
-  console.log( "compressing..." );
+  console.log('compressing...');
 
   await compress( filename, algorithm );
 
@@ -102,9 +102,9 @@ async function main() {
 }
 
 main()
-  .then( () => {
-    console.log( "done" );
-  } )
-  .catch( err => {
-    console.log( err.message );
-  } );
+.then( () => {
+  console.log('done');
+})
+.catch( err => {
+  console.log( err.message );
+});

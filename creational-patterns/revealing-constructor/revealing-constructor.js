@@ -32,7 +32,7 @@ class AppendOnlyRecord {
 }
 
 const myRecorder = new AppendOnlyRecord(
-  ( init ) => { init( 'Log Start' ) }
+  ( init ) => { init('Log Start'); }
 );
 
 myRecorder.log('log 0');

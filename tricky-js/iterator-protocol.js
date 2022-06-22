@@ -3,7 +3,7 @@ const string = 'string';
 
 // iterable objects implement that @@iterator method
 // accessed with the Symbol.iterator key
-const stringIterator = string[Symbol.iterator]();
+const stringIterator = string[ Symbol.iterator ]();
 
 const firstLetter = stringIterator.next();
 
@@ -16,7 +16,7 @@ class Counter {
     this.maximum = maximum;
   }
 
-  [Symbol.iterator]() {
+  [ Symbol.iterator ]() {
     const increment = this.increment;
     const maximum   = this.maximum;
 
@@ -30,14 +30,14 @@ class Counter {
           return {
             value: count,
             done: false
-          }
+          };
         } else {
           return {
             done: true
-          }
+          };
         }
       }
-    }
+    };
   }
 }
 

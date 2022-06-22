@@ -5,14 +5,14 @@
  */
 
 process.stdin
-  .on( "readable", () => {
-    console.log( "New data!" );
+.on( 'readable', () => {
+  console.log('New data!');
 
-    let chunk;
-    while( ( chunk = process.stdin.read() ) !== null ) {
-      console.log( "Read chunk: " + chunk.toString() );
-    }
-  } )
-  .on( "end", () => {
-    console.log( "End" );
-  } );
+  let chunk;
+  while ( ( chunk = process.stdin.read() ) !== null ) {
+    console.log( 'Read chunk: ' + chunk.toString() );
+  }
+})
+.on( 'end', () => {
+  console.log('End');
+});

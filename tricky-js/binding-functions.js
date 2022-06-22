@@ -2,7 +2,7 @@
 if the function is going to be passed somewhere else. */
 
 const person = {
-  name: "Tom",
+  name: 'Tom',
 
   getName() {
     return this.name;
@@ -20,6 +20,6 @@ undefined. In order to add the this context of person to the function we can use
 .bind() which is a method of the function prototype and returns a new function
 that has the this context of the object that is passed as a param */
 
-let newFunc = person.getName.bind( person );
+const newFunc = person.getName.bind( person );
 
 printName( newFunc );

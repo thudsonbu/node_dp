@@ -1,15 +1,15 @@
 // setup
 const a = async( x ) => {
-  console.log( "running a" );
-  return x + "a";
+  console.log('running a');
+  return x + 'a';
 };
 const b = async( x ) => {
-  console.log( "running b" );
-  return x + "b";
+  console.log('running b');
+  return x + 'b';
 };
 const c = async( x ) => {
-  console.log( "running c" );
-  return x + "c";
+  console.log('running c');
+  return x + 'c';
 };
 
 /**
@@ -20,12 +20,12 @@ const c = async( x ) => {
 const pipe = ( ...fns ) =>
   fns.reduce( ( prev, next ) => {
     return async( ...args ) => next( await prev( ...args ) );
-  } );
+  });
 
 async function pipet() {
   // stream is an async function with the promises "stacked"
-  let stream = pipe( a, b, c );
-  let out = await stream();
+  const stream = pipe( a, b, c );
+  const out = await stream();
 
   console.log( out );
 }
@@ -43,8 +43,8 @@ const rightPipe = ( ...fns ) => ( x ) =>
   );
 
 async function pipetRight() {
-  let stream = rightPipe( a, b, c );
-  let out = await stream();
+  const stream = rightPipe( a, b, c );
+  const out = await stream();
 
   console.log( out );
 }

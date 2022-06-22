@@ -7,18 +7,18 @@ when a promise is rejected. */
 
 const myPromise = new Promise( ( resolve, reject ) => {
   setTimeout( () => {
-    resolve( "foo" );
+    resolve('foo');
   }, 300 );
-} );
+});
 
 myPromise
-  .then( () => {
-    console.log( "fulfilled1" );
-  } )
-  .then( () => {
-    console.log( "fulfilled2" );
-  } )
-  .catch( () => {
-    console.log( "rejected" );
-  } );
+.then( () => {
+  console.log('fulfilled1');
+})
+.then( () => {
+  console.log('fulfilled2');
+})
+.catch( () => {
+  console.log('rejected');
+});
 

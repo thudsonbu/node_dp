@@ -13,10 +13,10 @@ function example() {
 
     for ( const num of arr ) {
       if ( num == 3 ) {
-        console.log( "Ope we hit three " + num );
+        console.log( 'Ope we hit three ' + num );
         continue outer;
       }
-      console.log( " And its not yet 3" );
+      console.log(' And its not yet 3');
     }
   }
 }

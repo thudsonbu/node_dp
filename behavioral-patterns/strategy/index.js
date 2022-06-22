@@ -10,7 +10,7 @@ const name = config.get('name');
 
 console.log( name );
 
-config.set('hair', 'blond');
+config.set( 'hair', 'blond' );
 
 const hair = config.get('hair');
 

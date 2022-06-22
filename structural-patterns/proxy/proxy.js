@@ -7,12 +7,12 @@ class MyDivider {
   divide( divisor ) {
     return this.dividend / divisor;
   }
-};
+}
 
 const divider = new MyDivider( 2 );
 
-console.log( divider.divide(4) ); // 2
-console.log( divider.divide(0) ); // Infinity
+console.log( divider.divide( 4 ) ); // 2
+console.log( divider.divide( 0 ) ); // Infinity
 
 class SafeDivider {
   constructor( divider ) {
