@@ -2,18 +2,33 @@ const http            = require('http');
 const WebSocketServer = require('websocket').server;
 
 // create base http server
-const server = http.createServer( ( req, res ) => {
+const httpServer = http.createServer( ( req, res ) => {
   console.log('we have received a request');
 });
 
-const websocket = new WebSocketServer({
-  // provide http server that the websocket server will use the tcp socket
-  // from
-  'httpServer': server
+const wsServer = new WebSocketServer({
+  httpServer
 });
 
-websocket.on('request');
+wsServer.on( 'connect', c => {
+  console.log( `connected`, c );
+});
 
-server.listen( 3005, () => {
+let con;
+
+wsServer.on( 'request', request => {
+  // we decide to accept everything
+  con = request.accept( null, request.origin );
+
+  con.on( 'message', m => {
+    console.log( `Received message ${ m.utf8Data }` );
+  });
+
+  con.on( 'close', () => {
+    console.log('connection closed');
+  });
+});
+
+httpServer.listen( 3005, () => {
   console.log('server listening on port 3005');
 });
