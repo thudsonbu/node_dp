@@ -10,26 +10,26 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@starryinternet/eslint-config-starry": "10.4.0",
     "eslint": "^8.3.0",
-    "eslint-plugin-node": "^11.1.0",
-    "@starryinternet/eslint-config-starry": "10.4.0"
+    "eslint-plugin-node": "^11.1.0"
   },
   "dependencies": {
-    "eslint-config-airbnb": "^19.0.4",
-    "websocket": "^1.0.29",
-    "ws": "^8.2.2",
-    "split": "^1.0.1",
-    "superagent": "^6.1.0",
-    "ini": "^2.0.0",
-    "object-path": "^0.11.8",
+    "@faker-js/faker": "^7.3.0",
     "connect-mongo": "^3.1.2",
     "dotenv": "^8.2.0",
-    "express-session": "^1.17.0",
-    "passport-local": "^1.0.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "ini": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.14",
+    "object-path": "^0.11.8",
     "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0"
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "split": "^1.0.1",
+    "superagent": "^6.1.0",
+    "websocket": "^1.0.29",
+    "ws": "^8.2.2"
   }
 }
