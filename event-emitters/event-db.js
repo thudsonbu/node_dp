@@ -24,6 +24,9 @@ const Find         = require('./find-stream');
  * @type {Document}
  */
 
+/**
+ * Core database class
+ */
 class EventDB extends EventEmitter {
   constructor( name, opts ) {
     super();
@@ -61,7 +64,7 @@ class EventDB extends EventEmitter {
 
       find.on( 'not found', () => {
         this.emit('not found');
-        reject('not not found');
+        reject('not found');
       });
 
       pipeline(
@@ -132,9 +135,32 @@ class EventDB extends EventEmitter {
   }
 
   /**
+   * Update a document by id, this is as simple as appending to the log as only
+   * the most recent value is processed
+   *
+   * @param {string} id - id of document to update
+   */
+  async updateById( id, data ) {
+    const { documentString } = this.createDocumentString( data, id );
+
+    await fs.writeFile(
+      this.file_path,
+      documentString,
+      { encoding: 'utf-8', flag: 'a' }
+    );
+
+    const returnValue = { id, data };
+
+    this.emit( 'update', returnValue );
+
+    return returnValue;
+  }
+
+  /**
    * Create a valid document string for storage in db
    *
    * @param {string} data - data of document to be created
+   * @param {string} [id] - id of document
    *
    * @typedef {Object} CreateDocumentStringResult
    * @property {string} documentString- document valid document string
@@ -143,12 +169,12 @@ class EventDB extends EventEmitter {
    *
    * @returns {CreateDocumentStringResult}
    */
-  createDocumentString( data ) {
-    const id = crypto.randomUUID();
+  createDocumentString( data, id ) {
+    const documentId = !!id ? id : crypto.randomUUID();
 
     return {
-      documentString: `${ id }${ this.dataDelimiter }${ data }${ this.documentDelimiter }`, // eslint-disable-line max-len
-      id,
+      documentString: `${ documentId }${ this.dataDelimiter }${ data }${ this.documentDelimiter }`, // eslint-disable-line max-len
+      id: documentId,
       data
     };
   }
