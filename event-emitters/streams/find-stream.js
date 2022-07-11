@@ -1,4 +1,4 @@
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 
 class Find extends Transform {
   constructor( id, dataDelimiter, documentDelimiter ) {
@@ -22,7 +22,6 @@ class Find extends Transform {
 
     docs.forEach( d => {
       const [ id, data ] = d.split( this.dataDelimiter );
-
 
       // we want the latest record for an id so we overwrite old versions
       if ( id === this.id ) {

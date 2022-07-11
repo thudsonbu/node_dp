@@ -1,9 +1,10 @@
-const EventEmitter = require('events');
-const fs           = require('fs/promises');
-const path         = require('path');
-const crypto       = require('crypto');
-const { pipeline } = require('node:stream/promises');
-const Find         = require('./find-stream');
+const EventEmitter         = require('node:events');
+const fs                   = require('node:fs/promises');
+const path                 = require('node:path');
+const crypto               = require('node:crypto');
+const { pipeline }         = require('node:stream/promises');
+const Find                 = require('./streams/find-stream');
+const createDocumentString = require('./utils/create-document-string');
 
 /**
  * Database document
@@ -13,14 +14,8 @@ const Find         = require('./find-stream');
  */
 
 /**
- * Insert event.
- * @event EventDB#insert
- * @type {Document}
- */
-
-/**
- * Find event.
- * @event EventDB#find
+ * Change event.
+ * @event EventDB#change
  * @type {Document}
  */
 
@@ -38,8 +33,14 @@ class EventDB extends EventEmitter {
       throw new Error('dataDelimiter must not equal documentDelimiter');
     }
 
-    this.name      = name;
-    this.file_path = path.resolve( __dirname, `./${ this.name }` );
+    this.name     = name;
+    this.filesDir = path.resolve( __dirname, `./db-files` );
+
+    // It is required that we create a unique filename as each time the
+    // compaction process is completed the database will begin referencing a
+    // new file with the compacted contents of the previous file.
+    this.fileName = crypto.randomUUID();
+    this.filePath = `${ this.filesDir }/${ this.fileName }`;
   }
 
   /**
@@ -47,7 +48,7 @@ class EventDB extends EventEmitter {
    *
    * @param {string} id - id to search with
    *
-   * @emits EventDB#find
+   * @emits EventDB#change
    *
    * @returns {Promise<Document>}
    */
@@ -68,7 +69,7 @@ class EventDB extends EventEmitter {
       });
 
       pipeline(
-        fs.readFile( this.file_path, { encoding: 'utf-8' } ),
+        fs.readFile( this.filePath, { encoding: 'utf-8' } ),
         find
       );
     });
@@ -79,15 +80,15 @@ class EventDB extends EventEmitter {
    *
    * @param {string} data - data to be inserted
    *
-   * @emits EventDB#insert
+   * @emits EventDB#change
    *
    * @returns {Promise<Document>}
    */
   async insert( data ) {
-    const { documentString, id } = this.createDocumentString( data );
+    const { documentString, id } = createDocumentString( data );
 
     await fs.writeFile(
-      this.file_path,
+      this.filePath,
       documentString,
       { encoding: 'utf-8', flag: 'a' }
     );
@@ -114,7 +115,7 @@ class EventDB extends EventEmitter {
     let blob = '';
 
     const results = data.map( d => {
-      const { documentString, id, data } = this.createDocumentString( d );
+      const { documentString, id, data } = createDocumentString( d );
 
       blob += documentString;
 
@@ -122,7 +123,7 @@ class EventDB extends EventEmitter {
     });
 
     await fs.writeFile(
-      this.file_path,
+      this.filePath,
       blob,
       { encoding: 'utf-8', flag: 'a' }
     );
@@ -141,10 +142,10 @@ class EventDB extends EventEmitter {
    * @param {string} id - id of document to update
    */
   async updateById( id, data ) {
-    const { documentString } = this.createDocumentString( data, id );
+    const { documentString } = createDocumentString( data, id );
 
     await fs.writeFile(
-      this.file_path,
+      this.filePath,
       documentString,
       { encoding: 'utf-8', flag: 'a' }
     );
@@ -154,29 +155,6 @@ class EventDB extends EventEmitter {
     this.emit( 'update', returnValue );
 
     return returnValue;
-  }
-
-  /**
-   * Create a valid document string for storage in db
-   *
-   * @param {string} data - data of document to be created
-   * @param {string} [id] - id of document
-   *
-   * @typedef {Object} CreateDocumentStringResult
-   * @property {string} documentString- document valid document string
-   * @property {string} id - id in documentString
-   * @property {string} data - data in documentString
-   *
-   * @returns {CreateDocumentStringResult}
-   */
-  createDocumentString( data, id ) {
-    const documentId = !!id ? id : crypto.randomUUID();
-
-    return {
-      documentString: `${ documentId }${ this.dataDelimiter }${ data }${ this.documentDelimiter }`, // eslint-disable-line max-len
-      id: documentId,
-      data
-    };
   }
 };
 
