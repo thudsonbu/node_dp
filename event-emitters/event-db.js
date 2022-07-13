@@ -5,6 +5,8 @@ const crypto               = require('node:crypto');
 const { pipeline }         = require('node:stream/promises');
 const Find                 = require('./streams/find-stream');
 const createDocumentString = require('./utils/create-document-string');
+const Compactor            = require('./db-compactor');
+const DBLock               = require('./db-lock');
 
 /**
  * Database document
@@ -23,7 +25,7 @@ const createDocumentString = require('./utils/create-document-string');
  * Core database class
  */
 class EventDB extends EventEmitter {
-  constructor( name, opts ) {
+  constructor( name, opts = {} ) {
     super();
 
     this.dataDelimiter     = opts?.dataDelimiter || '::::';
@@ -41,6 +43,25 @@ class EventDB extends EventEmitter {
     // new file with the compacted contents of the previous file.
     this.fileName = crypto.randomUUID();
     this.filePath = `${ this.filesDir }/${ this.fileName }`;
+
+    this.lock = new DBLock();
+
+    this.compactor = new Compactor({
+      filesDir: this.filesDir,
+      fileName: this.fileName,
+      dataDelimiter: this.dataDelimiter,
+      documentDelimiter: this.documentDelimiter,
+      lock: this.lock,
+      compactionInterval: opts.compactionInterval || null
+    });
+
+    // When a compaction cycle is finished we need to migrate the db to use
+    // the new file.
+    this.compactor.on( 'compacted', ({ newFilePath }) => {
+      this.filePath = newFilePath;
+    });
+
+    this.on( 'update', doc => this.compactor.recordUpdate( doc ) );
   }
 
   /**
@@ -69,7 +90,7 @@ class EventDB extends EventEmitter {
       });
 
       pipeline(
-        fs.readFile( this.filePath, { encoding: 'utf-8' } ),
+        fs.readFile( this.filePath ),
         find
       );
     });
@@ -85,7 +106,15 @@ class EventDB extends EventEmitter {
    * @returns {Promise<Document>}
    */
   async insert( data ) {
-    const { documentString, id } = createDocumentString( data );
+    // Since we are writing to the database, a lock must be acquired or this
+    // change might be lost due to not being included in a compaction cycle.
+    const release = await this.lock.acquire();
+
+    const { documentString, id } = createDocumentString({
+      data,
+      dataDelimiter: this.dataDelimiter,
+      documentDelimiter: this.documentDelimiter
+    });
 
     await fs.writeFile(
       this.filePath,
@@ -96,6 +125,8 @@ class EventDB extends EventEmitter {
     const returnValue = { id, data };
 
     this.emit( 'insert', returnValue );
+
+    release();
 
     return returnValue;
   };
@@ -112,10 +143,18 @@ class EventDB extends EventEmitter {
    * @returns {Promise<InsertManyResult>}
    */
   async insertMany( data ) {
+    // Since we are writing to the database, a lock must be acquired or this
+    // change might be lost due to not being included in a compaction cycle.
+    const release = await this.lock.acquire();
+
     let blob = '';
 
     const results = data.map( d => {
-      const { documentString, id, data } = createDocumentString( d );
+      const { documentString, id, data } = createDocumentString({
+        data: d,
+        documentDelimiter: this.documentDelimiter,
+        dataDelimiter: this.dataDelimiter
+      });
 
       blob += documentString;
 
@@ -132,6 +171,8 @@ class EventDB extends EventEmitter {
 
     this.emit( 'insertMany', returnValue );
 
+    release();
+
     return returnValue;
   }
 
@@ -142,7 +183,16 @@ class EventDB extends EventEmitter {
    * @param {string} id - id of document to update
    */
   async updateById( id, data ) {
-    const { documentString } = createDocumentString( data, id );
+    // Since we are writing to the database, a lock must be acquired or this
+    // change might be lost due to not being included in a compaction cycle.
+    const release = await this.lock.acquire();
+
+    const { documentString } = createDocumentString({
+      data,
+      id,
+      dataDelimiter: this.dataDelimiter,
+      documentDelimiter: this.documentDelimiter
+    });
 
     await fs.writeFile(
       this.filePath,
@@ -153,6 +203,8 @@ class EventDB extends EventEmitter {
     const returnValue = { id, data };
 
     this.emit( 'update', returnValue );
+
+    release();
 
     return returnValue;
   }

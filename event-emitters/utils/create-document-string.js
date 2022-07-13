@@ -1,8 +1,13 @@
+const crypto = require('node:crypto');
+
 /**
  * Create a valid document string for storage in db
  *
- * @param {string} data - data of document to be created
- * @param {string} [id] - id of document
+ * @param {string} opts.data - data of document to be created
+ * @param {string} opts.dataDelimiter - data delimiter in db
+ * @param {string} opts.documentDelimiter - document delimiter in db
+ * @param {string} [opts.id] - id of document
+
  *
  * @typedef {Object} CreateDocumentStringResult
  * @property {string} documentString- document valid document string
@@ -11,13 +16,14 @@
  *
  * @returns {CreateDocumentStringResult}
  */
-function createDocumentString( data, id ) {
-  const documentId = !!id ? id : crypto.randomUUID();
+function createDocumentString( opts ) {
+  const documentId = !!opts.id ? opts.id : crypto.randomUUID();
 
   return {
-    documentString: `${ documentId }${ this.dataDelimiter }${ data }${ this.documentDelimiter }`, // eslint-disable-line max-len
+    documentString: `${ documentId }${ opts.dataDelimiter }` +
+      `${ opts.data }${ opts.documentDelimiter }`,
     id: documentId,
-    data
+    data: opts.data
   };
 }
 

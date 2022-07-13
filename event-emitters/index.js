@@ -1,7 +1,7 @@
 const EventDB   = require('./event-db');
 const { faker } = require('@faker-js/faker');
 
-const documentCount = 10000;
+const documentCount = 3;
 
 async function main() {
   try {
@@ -34,6 +34,13 @@ async function main() {
     const updated = await db.findById( randomDocument.id );
     console.timeEnd('findUpdate');
     console.log( 'updated', updated );
+
+    await db.compactor.compact();
+
+    console.time('findUpdate');
+    const updated2 = await db.findById( randomDocument.id );
+    console.timeEnd('findUpdate');
+    console.log( 'updated', updated2 );
 
   } catch ( err ) {
     console.error( err );

@@ -7,16 +7,23 @@ const createDocumentString = require('../utils/create-document-string');
  * database will begin using after compaction is complete.
  */
 class CompactionStream extends Transform {
-  constructor( updateLog ) {
-    super();
+  constructor( opts ) {
+    super({ writableObjectMode: true });
 
-    this.updateLog = updateLog;
+    this.updateLog         = opts.updateLog;
+    this.dataDelimiter     = opts.dataDelimiter;
+    this.documentDelimiter = opts.documentDelimiter;
   }
 
   async _transform( document, encoding, callback ) {
-
     if ( !this.updateLog.has( document.id ) ) {
-      this.push( createDocumentString( document ) );
+      const { documentString } = createDocumentString({
+        ...document,
+        dataDelimiter: this.dataDelimiter,
+        documentDelimiter: this.documentDelimiter
+      });
+
+      this.push( documentString );
     } else {
       const currentCount = this.updateLog.get( document.id );
 

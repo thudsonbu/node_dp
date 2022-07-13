@@ -1,4 +1,4 @@
-const { Transform } = require('stream');
+const { Transform } = require('node:stream');
 
 /**
  * The DBReader take in output from a read stream of a database file and
@@ -7,7 +7,7 @@ const { Transform } = require('stream');
  */
 class DBReader extends Transform {
   constructor( dataDelimiter, documentDelimiter ) {
-    super();
+    super({ readableObjectMode: true });
 
     this.dataDelimiter     = dataDelimiter;
     this.documentDelimiter = documentDelimiter;
@@ -32,9 +32,11 @@ class DBReader extends Transform {
   }
 
   async _flush( callback ) {
-    const [ id, data ] = this.tail.split( this.dataDelimiter );
+    if ( this.tail.length ) {
+      const [ id, data ] = this.tail.split( this.dataDelimiter );
 
-    this.push({ id, data });
+      this.push({ id, data });
+    }
 
     callback();
   }
