@@ -9,8 +9,6 @@ design.
 
 ## Todo
 
-- [ ] Implement log compaction
 - [ ] Use `db-read-stream` in `find-stream`/`find`
 - [ ] Add `update` and `updateMany` methods
 - [ ] Use a `write-stream` for `insertMany` instead of buffering the `blob`
-- [ ] Implement secondaries (single leader replication)
