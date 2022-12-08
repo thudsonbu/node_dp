@@ -10,3 +10,4 @@ This repo contains useful examples of design patterns in node and notes to expla
 - [Structural Patterns](./structural-patterns/) - patterns used for controlling relationships between entities
 - [Behavioral Patterns](./behavioral-patterns/) - patterns used for controlling semantics
 - [Blockchain](./blockchain/) - a simple blockchain implementation
+- [EventEmitters](./event-emitters/) - a simple database using an event driven architecture and unindexed log structure storage
